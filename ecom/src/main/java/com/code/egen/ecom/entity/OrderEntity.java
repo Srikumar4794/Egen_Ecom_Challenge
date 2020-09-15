@@ -26,8 +26,8 @@ public class OrderEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderEntity")
     List<OrderPaymentEntity> orderPaymentEntityList;
 
-    @Column(name = "customer_name")
-    private Long customerName;
+    @Column(name = "customer_id")
+    private Long customerId;
 
     @Column(name = "billing_addr_id")
     private Long billingAddressId;
@@ -46,6 +46,9 @@ public class OrderEntity {
 
     @Column(name = "order_total")
     private Double orderTotal;
+
+    @Column(name = "order_status")
+    private String orderStatus;
 
     @Column(name = "created_ts")
     private Date createdTimeStamp;
