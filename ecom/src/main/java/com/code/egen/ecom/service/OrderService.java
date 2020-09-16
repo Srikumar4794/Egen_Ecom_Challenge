@@ -7,6 +7,8 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 @Data
 public class OrderService {
@@ -18,6 +20,8 @@ public class OrderService {
 
     public void addOrder(OrderEntity orderEntity) {
         orderEntity.setOrderStatus(OrderStatusCodes.CREATED.getDesc());
+        orderEntity.setCreatedTimeStamp(new Date());
+        orderEntity.setModifiedTimeStamp(new Date());
         orderDao.save(orderEntity);
     }
 

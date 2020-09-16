@@ -6,7 +6,7 @@ spring:
     password: My9@passw0rd
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     database: postgresql
     properties:
       hibernate:
