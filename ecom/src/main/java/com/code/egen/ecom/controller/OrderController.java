@@ -3,15 +3,14 @@ package com.code.egen.ecom.controller;
 import com.code.egen.ecom.entity.OrderEntity;
 import com.code.egen.ecom.service.OrderService;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Data
 public class OrderController extends BaseRestController{
-    @Autowired
-    private OrderService orderService;
+    private final OrderService orderService;
 
     @GetMapping(value = "/order/{id}")
     public ResponseEntity<OrderEntity> getOrderById(@PathVariable("id") Long orderId){
