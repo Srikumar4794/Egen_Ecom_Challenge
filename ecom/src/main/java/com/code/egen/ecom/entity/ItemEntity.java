@@ -13,16 +13,9 @@ public class ItemEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long orderItemId;
 
-/*    @Column(name = "order_id")
-    private Long orderId;*/
-
     @Column(name = "price")
     private Double price;
 
     @Column(name = "quantity")
     private Integer quantity;
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "order_id")
-//    private OrderEntity orderEntity;
 }

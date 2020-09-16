@@ -19,10 +19,9 @@ public class PaymentEntity {
     @Column(name = "payment_amount")
     private Double paymentAmount;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    //@JoinColumn(name = "billing_addr_id", referencedColumnName = "addr_id", insertable = false, updatable = false)
-    private AddressEntity addressEntity;
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "billing_addr_id", nullable = false)
+    private AddressEntity billAddressEntity;
 
     @ManyToOne
     @JoinColumn(name = "order_id", insertable = false, updatable = false)
