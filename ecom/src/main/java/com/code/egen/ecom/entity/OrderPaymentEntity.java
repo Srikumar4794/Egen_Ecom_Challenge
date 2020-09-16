@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "payment")
 public class OrderPaymentEntity {
     @Id
-    @Column(name = "order_payment_id")
+    @Column(name = "transaction_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long transactionId;
 
@@ -25,7 +25,7 @@ public class OrderPaymentEntity {
     @Column(name = "billing_addr_id")
     private Long billingAddressId;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "order_id", insertable = false, updatable = false)
     private OrderEntity orderEntity;
 }

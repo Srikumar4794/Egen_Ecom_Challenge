@@ -17,6 +17,7 @@ public class OrderService {
     }
 
     public void addOrder(OrderEntity orderEntity) {
+        orderEntity.setOrderStatus(OrderStatusCodes.CREATED.getDesc());
         orderDao.save(orderEntity);
     }
 

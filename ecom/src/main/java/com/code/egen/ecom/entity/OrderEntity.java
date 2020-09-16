@@ -18,14 +18,6 @@ public class OrderEntity {
     @Column(name = "order_item_id")
     private Long orderItemId;
 
-    @JoinColumn(name = "order_item_id", referencedColumnName = "order_item_id", insertable = false, updatable = false)
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderEntity")
-    List<OrderItemEntity> orderItemEntityList;
-
-    @JoinColumn(name = "order_id", referencedColumnName = "order_id", insertable = false, updatable = false)
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderEntity")
-    List<OrderPaymentEntity> orderPaymentEntityList;
-
     @Column(name = "customer_id")
     private Long customerId;
 
