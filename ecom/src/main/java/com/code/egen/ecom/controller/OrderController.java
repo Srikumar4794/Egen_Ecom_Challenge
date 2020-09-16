@@ -2,6 +2,8 @@ package com.code.egen.ecom.controller;
 
 import com.code.egen.ecom.entity.OrderEntity;
 import com.code.egen.ecom.service.OrderService;
+import com.code.egen.ecom.translator.IOrderTranslator;
+import com.code.egen.ecom.vo.OrderVO;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,11 +13,12 @@ import org.springframework.web.bind.annotation.*;
 @Data
 public class OrderController extends BaseRestController{
     private final OrderService orderService;
+    private final IOrderTranslator orderTranslator;
 
     @GetMapping(value = "/order/{id}")
-    public ResponseEntity<OrderEntity> getOrderById(@PathVariable("id") Long orderId){
+    public ResponseEntity<OrderVO> getOrderById(@PathVariable("id") Long orderId){
         try{
-            return ResponseEntity.ok(orderService.getOrderById(orderId));
+            return ResponseEntity.ok(orderTranslator.toOrderVO(orderService.getOrderById(orderId)));
         }
         catch(IllegalArgumentException exception){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
