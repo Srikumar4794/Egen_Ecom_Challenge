@@ -10,10 +10,10 @@ public interface IOrderTranslator {
 
     @Mapping(target = "shippingAddress", expression = "java(orderEntity.getShipAddressEntity().getAddressLine1()." +
             "concat(" +
-            " ', ' + orderEntity.getShipAddressEntity().getAddressLine2()" +
-            " + ', ' + orderEntity.getShipAddressEntity().getCity()" +
-            " + ', ' + orderEntity.getShipAddressEntity().getState()" +
-            " + ', ' + orderEntity.getShipAddressEntity().getZipCode())" +
+            " ',' + orderEntity.getShipAddressEntity().getAddressLine2()" +
+            " + ',' + orderEntity.getShipAddressEntity().getCity()" +
+            " + ',' + orderEntity.getShipAddressEntity().getState()" +
+            " + ',' + orderEntity.getShipAddressEntity().getZipCode())" +
             ")")
     OrderVO toOrderVO(OrderEntity orderEntity);
 }

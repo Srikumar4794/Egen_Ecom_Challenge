@@ -43,7 +43,10 @@ public class OrderEntity {
     @Column(name = "modified_ts")
     private Date modifiedTimeStamp;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "shipping_addr_id", nullable = false)
+    @Column(name = "shipping_addr_id")
+    private Long shippingAddressId;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shipping_addr_id", insertable = false, updatable = false)
     private AddressEntity shipAddressEntity;
 }
