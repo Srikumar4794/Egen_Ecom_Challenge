@@ -22,9 +22,6 @@ public class OrderEntity {
     @Column(name = "customer_id")
     private Long customerId;
 
-    @Column(name = "shipping_addr_id")
-    private Long shippingAddressId;
-
     @Column(name = "order_subtotal")
     private Double orderSubTotal;
 

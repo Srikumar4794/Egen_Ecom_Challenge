@@ -22,6 +22,10 @@ public class OrderPaymentEntity {
     @Column(name = "billing_addr_id")
     private Long billingAddressId;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "billing_addr_id", referencedColumnName = "addr_id", insertable = false, updatable = false)
+    private AddressEntity addressEntity;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "order_id", insertable = false, updatable = false)
     private OrderEntity orderEntity;
