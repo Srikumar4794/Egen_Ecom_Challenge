@@ -4,7 +4,6 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "customer_order")
@@ -20,9 +19,6 @@ public class OrderEntity {
 
     @Column(name = "customer_id")
     private Long customerId;
-
-    @Column(name = "billing_addr_id")
-    private Long billingAddressId;
 
     @Column(name = "shipping_addr_id")
     private Long shippingAddressId;
