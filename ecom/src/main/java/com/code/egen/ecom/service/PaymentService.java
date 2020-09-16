@@ -19,7 +19,7 @@ public class PaymentService {
     public void addPayment(PaymentEntity paymentEntity){
         List<PaymentEntity> paymentEntities = paymentDao.findAllByOrderEntity_OrderId(paymentEntity.getOrderEntity().getOrderId());
 
-        if(!paymentEntities.isEmpty()){
+        if(paymentEntities != null && !paymentEntities.isEmpty()){
             Double alreadyPaid = paymentEntities.stream().map(PaymentEntity::getPaymentAmount).reduce(0.0, Double::sum);
             OrderEntity orderEntity = orderDao.findById(paymentEntity.getOrderEntity().getOrderId()).orElseThrow(() -> new IllegalArgumentException("Invalid payment details"));
 

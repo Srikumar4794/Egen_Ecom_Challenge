@@ -13,6 +13,9 @@ public class PaymentEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long paymentConfirmationId;
 
+    @Column(name = "order_id")
+    private Long orderId;
+
     @Column(name = "payment_method")
     private String paymentMethod;
 

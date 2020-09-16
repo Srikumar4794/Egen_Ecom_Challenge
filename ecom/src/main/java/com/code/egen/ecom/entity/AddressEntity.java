@@ -13,19 +13,19 @@ public class AddressEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long addressId;
 
-    @Column(name = "addr_line1")
+    @Column(name = "addr_line1", nullable = false)
     private String addressLine1;
 
-    @Column(name = "addr_line2")
+    @Column(name = "addr_line2", nullable = false)
     private String addressLine2;
 
-    @Column(name = "city")
+    @Column(name = "city", nullable = false)
     private String city;
 
-    @Column(name = "state")
+    @Column(name = "state", nullable = false)
     private String state;
 
-    @Column(name = "zip")
+    @Column(name = "zip", nullable = false)
     private String zipCode;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "shipAddressEntity")
