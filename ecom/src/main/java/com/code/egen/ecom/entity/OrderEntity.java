@@ -17,10 +17,13 @@ public class OrderEntity {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
-    private List<OrderItemEntity> orderItemEntities;
+    private List<ItemEntity> orderItemEntities;
 
     @Column(name = "customer_id")
     private Long customerId;
+
+    @Column(name = "shipping_addr_id")
+    private Long shippingAddressId;
 
     @Column(name = "order_subtotal")
     private Double orderSubTotal;
@@ -43,4 +46,8 @@ public class OrderEntity {
     @Column(name = "modified_ts")
     private Date modifiedTimeStamp;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    //@JoinColumn(name = "shipping_addr_id", referencedColumnName = "addr_id", insertable = false, updatable = false)
+    private AddressEntity addressEntity;
 }

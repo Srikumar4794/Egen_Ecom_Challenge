@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "payment")
-public class OrderPaymentEntity {
+public class PaymentEntity {
     @Id
     @Column(name = "payment_confirmation_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,11 +19,9 @@ public class OrderPaymentEntity {
     @Column(name = "payment_amount")
     private Double paymentAmount;
 
-    @Column(name = "billing_addr_id")
-    private Long billingAddressId;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "billing_addr_id", referencedColumnName = "addr_id", insertable = false, updatable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    //@JoinColumn(name = "billing_addr_id", referencedColumnName = "addr_id", insertable = false, updatable = false)
     private AddressEntity addressEntity;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
