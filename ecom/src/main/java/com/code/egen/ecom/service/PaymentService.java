@@ -17,7 +17,7 @@ public class PaymentService {
     private final IOrderDao orderDao;
 
     public void addPayment(PaymentEntity paymentEntity){
-        List<PaymentEntity> paymentEntities = paymentDao.findAllByOrderEntity_OrderId(paymentEntity.getOrderEntity().getOrderId());
+        List<PaymentEntity> paymentEntities = paymentDao.findAllByOrderId(paymentEntity.getOrderId());
 
         if(paymentEntities != null && !paymentEntities.isEmpty()){
             Double alreadyPaid = paymentEntities.stream().map(PaymentEntity::getPaymentAmount).reduce(0.0, Double::sum);
