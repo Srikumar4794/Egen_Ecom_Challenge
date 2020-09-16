@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "customer_order")
@@ -14,8 +15,9 @@ public class OrderEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long orderId;
 
-    @Column(name = "order_item_id")
-    private Long orderItemId;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id")
+    private List<OrderItemEntity> orderItemEntities;
 
     @Column(name = "customer_id")
     private Long customerId;

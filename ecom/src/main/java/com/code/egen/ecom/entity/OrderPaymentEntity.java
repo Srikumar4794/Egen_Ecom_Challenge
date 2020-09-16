@@ -6,12 +6,9 @@ import javax.persistence.*;
 @Table(name = "payment")
 public class OrderPaymentEntity {
     @Id
-    @Column(name = "transaction_id")
+    @Column(name = "payment_confirmation_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long transactionId;
-
-    @Column(name = "order_id")
-    private Long orderId;
+    private Long paymentConfirmationId;
 
     @Column(name = "payment_method")
     private String paymentMethod;
@@ -19,8 +16,8 @@ public class OrderPaymentEntity {
     @Column(name = "payment_ts")
     private Long paymentTimeStamp;
 
-    @Column(name = "txn_amount")
-    private Double transactionAmount;
+    @Column(name = "payment_amount")
+    private Double paymentAmount;
 
     @Column(name = "billing_addr_id")
     private Long billingAddressId;
@@ -28,4 +25,5 @@ public class OrderPaymentEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "order_id", insertable = false, updatable = false)
     private OrderEntity orderEntity;
+
 }

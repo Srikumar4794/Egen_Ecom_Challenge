@@ -13,14 +13,16 @@ public class OrderItemEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long orderItemId;
 
+/*    @Column(name = "order_id")
+    private Long orderId;*/
+
     @Column(name = "price")
     private Double price;
 
     @Column(name = "quantity")
     private Integer quantity;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "order_id", nullable = false, insertable = false, updatable = false)
-    private OrderEntity orderEntity;
-
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "order_id")
+//    private OrderEntity orderEntity;
 }
