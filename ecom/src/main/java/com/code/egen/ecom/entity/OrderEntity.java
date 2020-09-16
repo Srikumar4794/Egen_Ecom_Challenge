@@ -28,6 +28,9 @@ public class OrderEntity {
     @Column(name = "order_tax")
     private Double orderTax;
 
+    @Column(name = "shipping_addr_id")
+    private Long shippingAddressId;
+
     @Column(name = "shipping_charge")
     private Double shippingCharges;
 
@@ -42,9 +45,6 @@ public class OrderEntity {
 
     @Column(name = "modified_ts")
     private Date modifiedTimeStamp;
-
-    @Column(name = "shipping_addr_id")
-    private Long shippingAddressId;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shipping_addr_id", insertable = false, updatable = false)

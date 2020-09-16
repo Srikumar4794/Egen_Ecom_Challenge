@@ -11,4 +11,7 @@ public class OrderVO {
     private Long customerId;
     private List<ItemEntity> orderItemEntities;
     private String shippingAddress;
+    private Double orderSubTotal;
+    private Double orderTax;
+    private Double shippingCharges;
 }
