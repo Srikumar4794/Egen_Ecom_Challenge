@@ -3,20 +3,25 @@ package com.code.egen.ecom.controller;
 import com.code.egen.ecom.entity.PaymentEntity;
 import com.code.egen.ecom.exception.PaymentException;
 import com.code.egen.ecom.service.PaymentService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Data
-public class PaymentController extends BaseRestController {
+public class PaymentController {
     private final PaymentService paymentService;
 
-    @PostMapping("/pay")
+    @PostMapping("/api/v1/pay")
+    @ApiOperation("Make payment for an order")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Transaction successfully completed"),
+                           @ApiResponse(code = 404, message = "Order details not found.") })
     public ResponseEntity<Void> payForOrder(@RequestBody PaymentEntity paymentEntity){
         try{
             paymentService.addPayment(paymentEntity);
