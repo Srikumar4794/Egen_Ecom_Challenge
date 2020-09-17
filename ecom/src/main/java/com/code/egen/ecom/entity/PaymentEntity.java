@@ -26,8 +26,8 @@ public class PaymentEntity {
     @Column(name = "payment_amount")
     private Double paymentAmount;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "billing_addr_id", insertable = false, updatable = false)
+    @ManyToOne
+    @JoinColumn(name = "billing_addr_id", nullable = false, insertable = false, updatable = false)
     private AddressEntity billAddressEntity;
 
     @ManyToOne

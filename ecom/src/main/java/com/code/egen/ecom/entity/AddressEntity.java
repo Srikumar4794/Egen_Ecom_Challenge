@@ -3,6 +3,7 @@ package com.code.egen.ecom.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "address")
@@ -28,9 +29,9 @@ public class AddressEntity {
     @Column(name = "zip", nullable = false)
     private String zipCode;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "shipAddressEntity")
-    private OrderEntity orderEntity;
+    @OneToMany(mappedBy = "shippingAddressEntity")
+    private List<OrderEntity> orderEntities;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "billAddressEntity")
-    private PaymentEntity paymentEntity;
+    @OneToMany(mappedBy = "billAddressEntity")
+    private List<PaymentEntity> paymentEntities;
 }
