@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -52,6 +53,12 @@ public class OrderService {
 
         logger.info("Order with id: " + orderEntity.getOrderId() + " created for customer id:" + orderEntity.getCustomerId());
         return newOrderEntity;
+    }
+
+    public void addBulkOrders(List<OrderEntity> orderEntityList) throws AddressNotFoundException {
+        for(OrderEntity order: orderEntityList){
+            addOrder(order);
+        }
     }
 
     private Double getSubTotal(OrderEntity orderEntity) {

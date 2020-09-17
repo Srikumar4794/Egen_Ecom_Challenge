@@ -1,5 +1,6 @@
 package com.code.egen.ecom.controller;
 
+import com.code.egen.ecom.dto.BatchOrderDTO;
 import com.code.egen.ecom.entity.OrderEntity;
 import com.code.egen.ecom.exception.AddressNotFoundException;
 import com.code.egen.ecom.exception.OrderNotFoundException;
@@ -48,6 +49,18 @@ public class OrderController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @PostMapping(value = "/api/v1/order-bulk")
+    @ApiOperation(value = "Create a group of orders.")
+    @ApiResponse(code = 202, message = "Accepted")
+    public void createOrders(@RequestBody BatchOrderDTO batchOrderDTO){
+        try {
+            orderService.addBulkOrders(batchOrderDTO.getOrderEntityList());
+        } catch (AddressNotFoundException addressNotFoundException) {
+            addressNotFoundException.printStackTrace();
+        }
+    }
+
 
     @PatchMapping(value = "/api/v1/order/{id}/cancel")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Order successfully cancelled."),
