@@ -1,6 +1,7 @@
 package com.code.egen.ecom.config;
 
 import com.code.egen.ecom.entity.OrderEntity;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -43,9 +44,9 @@ public class KafkaConfig {
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.getTypeFactory().constructParametricType(List.class, OrderEntity.class);
+        JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, OrderEntity.class);
         return new DefaultKafkaConsumerFactory<String, List<OrderEntity>>(config, new StringDeserializer(),
-                new JsonDeserializer<>(objectMapper));
+                new JsonDeserializer<List<OrderEntity>>(javaType, objectMapper, false));
     }
 
     @Bean

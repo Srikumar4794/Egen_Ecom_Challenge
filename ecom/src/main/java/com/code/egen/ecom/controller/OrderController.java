@@ -60,14 +60,12 @@ public class OrderController {
     public void createOrders(@RequestBody List<OrderEntity> orderEntities){
         kafkaProducer.sendOrdersToTopic("order-test",orderEntities);
 //    public void createOrders(@RequestBody BatchOrderDTO batchOrderDTO){
-//        try {
-//            orderService.addBulkOrders(batchOrderDTO.getOrderEntityList());
-//        } catch (AddressNotFoundException addressNotFoundException) {
-//            addressNotFoundException.printStackTrace();
-//        }
-
+/*        try {
+            orderService.addBulkOrders(orderEntities);
+        } catch (AddressNotFoundException addressNotFoundException) {
+            addressNotFoundException.printStackTrace();
+        }*/
     }
-
 
     @PatchMapping(value = "/api/v1/order/{id}/cancel")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Order successfully cancelled."),

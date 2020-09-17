@@ -22,10 +22,10 @@ public class KafkaConsumer {
 
     @KafkaListener(topics = "order-test", containerFactory = "orderKafkaListenerFactory")
     public void consumeJson(List<OrderEntity> orderEntities) throws AddressNotFoundException {
-        System.out.println("List is: " + orderEntities);
+/*        System.out.println("List is: " + orderEntities);
         for(OrderEntity each:orderEntities){
             System.out.println(each);
-        }
-//        orderService.addBulkOrders(orderEntities);
+        }*/
+        orderService.addBulkOrders(orderEntities);
     }
 }
