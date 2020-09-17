@@ -28,7 +28,8 @@ public class OrderController {
         try {
             OrderVO body = orderTranslator.toOrderVO(orderService.getOrderById(orderId));
             return ResponseEntity.ok(body);
-        } catch (OrderNotFoundException exception) {
+        }
+        catch (OrderNotFoundException exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
@@ -39,11 +40,11 @@ public class OrderController {
             @ApiResponse(code = 400, message = "Order details not found")
     })
     public ResponseEntity<OrderEntity> createOrder(@RequestBody OrderEntity orderEntity) {
-        try{
+        try {
             OrderEntity response = orderService.addOrder(orderEntity);
             return ResponseEntity.ok(response);
         }
-        catch(AddressNotFoundException addressNotFoundException){
+        catch (AddressNotFoundException addressNotFoundException) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -52,11 +53,12 @@ public class OrderController {
     @PatchMapping(value = "/api/v1/order/{id}/cancel")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Order successfully cancelled."),
             @ApiResponse(code = 400, message = "Order details not found.")})
-    public ResponseEntity<Void> cancelOrder(@PathVariable("id") Long orderId, @RequestBody OrderEntity orderEntity) {
+    public ResponseEntity<OrderEntity> cancelOrder(@PathVariable("id") Long orderId, @RequestBody OrderEntity orderEntity) {
         try {
-            orderService.cancelOrder(orderId, orderEntity);
-            return ResponseEntity.ok().build();
-        } catch (OrderNotFoundException exception) {
+            OrderEntity responseEntity = orderService.cancelOrder(orderId, orderEntity);
+            return ResponseEntity.ok(responseEntity);
+        }
+        catch (OrderNotFoundException exception) {
             return ResponseEntity.notFound().build();
         }
     }

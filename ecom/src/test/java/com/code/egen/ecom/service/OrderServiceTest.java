@@ -46,8 +46,6 @@ class OrderServiceTest {
 
     @Test
     void addOrder() throws AddressNotFoundException {
-        Mockito.when(addressDao.findById(5L)).thenReturn(Optional.of(new AddressEntity()));
-
         OrderEntity orderEntity = new OrderEntity();
         orderEntity.setOrderId(2L);
         orderEntity.setShippingAddressId(5L);
@@ -55,11 +53,13 @@ class OrderServiceTest {
         orderEntity.setOrderTax(5.0);
 
         Mockito.when(orderDao.save(orderEntity)).thenReturn(orderEntity);
+        Mockito.when(addressDao.findById(5L)).thenReturn(Optional.of(new AddressEntity()));
 
         List<ItemEntity> itemEntities = Arrays.asList(new ItemEntity(null, 15.0, 2), new ItemEntity(null, 21.0, 4));
         orderEntity.setOrderItemEntities(itemEntities);
         OrderEntity orderEntity1 = mockOrderService.addOrder(orderEntity);
-        assertEquals(orderEntity1.getOrderTotal(),129.5);
+        assertEquals(129.5, orderEntity1.getOrderTotal());
+        assertEquals(OrderStatusCodes.CREATED.getDesc(), orderEntity1.getOrderStatus());
 
         orderEntity.setShippingAddressId(10L);
         Mockito.when(addressDao.findById(10L)).thenReturn(Optional.empty());
@@ -67,7 +67,21 @@ class OrderServiceTest {
     }
 
     @Test
-    void cancelOrder() {
+    void cancelOrder() throws AddressNotFoundException {
+        OrderEntity orderEntity = new OrderEntity();
+        orderEntity.setOrderId(2L);
+        orderEntity.setOrderStatus(OrderStatusCodes.CREATED.getDesc());
+        orderEntity.setShippingAddressId(5L);
+        orderEntity.setShippingCharges(10.5);
+        orderEntity.setOrderTax(5.0);
+
+        Mockito.when(orderDao.findById(2L)).thenReturn(Optional.empty());
+        assertThrows(OrderNotFoundException.class, () -> mockOrderService.cancelOrder(2L, orderEntity));
+
+        Mockito.when(orderDao.findById(2L)).thenReturn(Optional.of(orderEntity));
+        Mockito.when(orderDao.save(orderEntity)).thenReturn(orderEntity);
+
+        assertEquals(OrderStatusCodes.CANCELLED.getDesc(), mockOrderService.cancelOrder(2L, orderEntity).getOrderStatus());
 
     }
 }

@@ -59,12 +59,12 @@ public class OrderService {
         return getSubTotal(orderEntity) + orderEntity.getOrderTax() + orderEntity.getShippingCharges();
     }
 
-    public void cancelOrder(Long orderId, OrderEntity orderEntity) {
+    public OrderEntity cancelOrder(Long orderId, OrderEntity orderEntity) {
         if(orderDao.findById(orderId).isEmpty()){
             logger.error(ErrorCodes.ORDER_NOT_FOUND.getErrorDesc());
             throw new OrderNotFoundException(ErrorCodes.ORDER_NOT_FOUND.getErrorDesc());
         }
         orderEntity.setOrderStatus(OrderStatusCodes.CANCELLED.getDesc());
-        orderDao.save(orderEntity);
+        return orderDao.save(orderEntity);
     }
 }
