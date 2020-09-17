@@ -17,5 +17,4 @@ public class OrderVO {
     private String orderStatus;
     private Date createdTimeStamp;
     private Date modifiedTimeStamp;
-    private String shippingAddress;
 }

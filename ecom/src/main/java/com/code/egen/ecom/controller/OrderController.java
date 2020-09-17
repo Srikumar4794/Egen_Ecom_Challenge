@@ -4,6 +4,7 @@ import com.code.egen.ecom.dto.BatchOrderDTO;
 import com.code.egen.ecom.entity.OrderEntity;
 import com.code.egen.ecom.exception.AddressNotFoundException;
 import com.code.egen.ecom.exception.OrderNotFoundException;
+import com.code.egen.ecom.kafka.KafkaProducer;
 import com.code.egen.ecom.service.OrderService;
 import com.code.egen.ecom.translator.IOrderTranslator;
 import com.code.egen.ecom.vo.OrderVO;
@@ -15,11 +16,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @Data
 public class OrderController {
     private final OrderService orderService;
     private final IOrderTranslator orderTranslator;
+    private final KafkaProducer kafkaProducer;
 
     @GetMapping(value = "/api/v1/order/{id}")
     @ApiOperation(value = "Get order by id.")
@@ -53,12 +57,15 @@ public class OrderController {
     @PostMapping(value = "/api/v1/order-bulk")
     @ApiOperation(value = "Create a group of orders.")
     @ApiResponse(code = 202, message = "Accepted")
-    public void createOrders(@RequestBody BatchOrderDTO batchOrderDTO){
-        try {
-            orderService.addBulkOrders(batchOrderDTO.getOrderEntityList());
-        } catch (AddressNotFoundException addressNotFoundException) {
-            addressNotFoundException.printStackTrace();
-        }
+    public void createOrders(@RequestBody List<OrderEntity> orderEntities){
+        kafkaProducer.sendOrdersToTopic("order-test",orderEntities);
+//    public void createOrders(@RequestBody BatchOrderDTO batchOrderDTO){
+//        try {
+//            orderService.addBulkOrders(batchOrderDTO.getOrderEntityList());
+//        } catch (AddressNotFoundException addressNotFoundException) {
+//            addressNotFoundException.printStackTrace();
+//        }
+
     }
 
 
