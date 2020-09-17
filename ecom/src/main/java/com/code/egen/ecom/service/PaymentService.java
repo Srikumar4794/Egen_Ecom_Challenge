@@ -2,12 +2,14 @@ package com.code.egen.ecom.service;
 
 import com.code.egen.ecom.dao.IOrderDao;
 import com.code.egen.ecom.dao.IPaymentDao;
+import com.code.egen.ecom.dto.PaymentDTO;
 import com.code.egen.ecom.entity.OrderEntity;
 import com.code.egen.ecom.entity.PaymentEntity;
 import com.code.egen.ecom.enums.ErrorCodes;
 import com.code.egen.ecom.enums.OrderStatusCodes;
 import com.code.egen.ecom.exception.OrderNotFoundException;
 import com.code.egen.ecom.exception.PaymentException;
+import com.code.egen.ecom.translator.IPaymentTranslator;
 import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,11 +24,13 @@ import java.util.Optional;
 public class PaymentService {
     private final IPaymentDao paymentDao;
 
+    private final IPaymentTranslator paymentTranslator;
     private final IOrderDao orderDao;
 
     private Logger logger = LoggerFactory.getLogger(PaymentService.class);
 
-    public PaymentEntity addPayment(PaymentEntity paymentEntity){
+    public PaymentEntity addPayment(PaymentDTO paymentDTO){
+        PaymentEntity paymentEntity = paymentTranslator.toPaymentEntity(paymentDTO);
         List<PaymentEntity> paymentEntities = paymentDao.findAllByOrderId(paymentEntity.getOrderId());
 
         if(paymentEntities != null && !paymentEntities.isEmpty()){

@@ -1,5 +1,6 @@
 package com.code.egen.ecom.controller;
 
+import com.code.egen.ecom.dto.PaymentDTO;
 import com.code.egen.ecom.entity.PaymentEntity;
 import com.code.egen.ecom.exception.PaymentException;
 import com.code.egen.ecom.service.PaymentService;
@@ -22,9 +23,9 @@ public class PaymentController {
     @ApiOperation("Make payment for an order")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Transaction successfully completed"),
                            @ApiResponse(code = 404, message = "Order details not found.") })
-    public ResponseEntity<Void> payForOrder(@RequestBody PaymentEntity paymentEntity){
+    public ResponseEntity<Void> payForOrder(@RequestBody PaymentDTO paymentDTO){
         try{
-            paymentService.addPayment(paymentEntity);
+            paymentService.addPayment(paymentDTO);
             return ResponseEntity.status(HttpStatus.OK).body(null);
         }
         catch(PaymentException exception){

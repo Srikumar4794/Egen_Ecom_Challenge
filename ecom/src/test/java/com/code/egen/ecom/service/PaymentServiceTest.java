@@ -2,6 +2,7 @@ package com.code.egen.ecom.service;
 
 import com.code.egen.ecom.dao.IOrderDao;
 import com.code.egen.ecom.dao.IPaymentDao;
+import com.code.egen.ecom.dto.PaymentDTO;
 import com.code.egen.ecom.entity.OrderEntity;
 import com.code.egen.ecom.entity.PaymentEntity;
 import com.code.egen.ecom.enums.OrderStatusCodes;
@@ -31,21 +32,21 @@ class PaymentServiceTest {
 
     @Test
     void addPayment() {
-        PaymentEntity paymentEntity = new PaymentEntity();
-        paymentEntity.setOrderId(1L);
-        paymentEntity.setPaymentAmount(15.0);
+        PaymentDTO paymentDTO = new PaymentDTO();
+        paymentDTO.setOrderId(1L);
+        paymentDTO.setPaymentAmount(15.0);
 
         OrderEntity orderEntity = new OrderEntity();
         orderEntity.setOrderStatus(OrderStatusCodes.CREATED.getDesc());
         orderEntity.setOrderId(1L);
         orderEntity.setOrderTotal(14.0);
 
-        PaymentEntity paidEntity = new PaymentEntity();
-        paidEntity.setOrderId(1L);
-        paidEntity.setPaymentAmount(13.0);
+        PaymentEntity paidDTO = new PaymentEntity();
+        paidDTO.setOrderId(1L);
+        paidDTO.setPaymentAmount(13.0);
 
         Mockito.when(orderDao.findById(1L)).thenReturn(java.util.Optional.of(orderEntity));
-        Mockito.when(paymentDao.findAllByOrderId(paymentEntity.getOrderId())).thenReturn(Arrays.asList(paidEntity));
-        assertThrows(PaymentException.class, ()->mockPaymentService.addPayment(paymentEntity));
+        Mockito.when(paymentDao.findAllByOrderId(paymentDTO.getOrderId())).thenReturn(Arrays.asList(paidDTO));
+        assertThrows(PaymentException.class, ()->mockPaymentService.addPayment(paymentDTO));
     }
 }

@@ -36,5 +36,4 @@ public class PaymentEntity {
 
     @Column(name = "payment_ts")
     private Date paymentTimeStamp;
-
 }
