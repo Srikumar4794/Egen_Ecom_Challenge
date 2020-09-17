@@ -2,8 +2,8 @@ package com.code.egen.ecom.service;
 
 import com.code.egen.ecom.dao.IAddressDao;
 import com.code.egen.ecom.dao.IOrderDao;
-import com.code.egen.ecom.entity.Address;
-import com.code.egen.ecom.entity.Order;
+import com.code.egen.ecom.entity.AddressEntity;
+import com.code.egen.ecom.entity.OrderEntity;
 import com.code.egen.ecom.enums.ErrorCodes;
 import com.code.egen.ecom.enums.OrderStatusCodes;
 import com.code.egen.ecom.exception.AddressNotFoundException;
@@ -26,8 +26,8 @@ public class OrderService {
 
     private Logger logger = LoggerFactory.getLogger(OrderService.class);
 
-    public Order getOrderById(Long orderId){
-        Optional<Order> orderEntity = orderDao.findById(orderId);
+    public OrderEntity getOrderById(Long orderId){
+        Optional<OrderEntity> orderEntity = orderDao.findById(orderId);
         if(orderEntity.isEmpty()){
             logger.error(ErrorCodes.ORDER_NOT_FOUND.getErrorDesc());
             throw new OrderNotFoundException(ErrorCodes.ORDER_NOT_FOUND.getErrorDesc());
@@ -36,45 +36,45 @@ public class OrderService {
         return orderEntity.get();
     }
 
-    public Order addOrder(Order order) throws AddressNotFoundException {
-        Optional<Address> addressEntity = addressDao.findById(order.getShippingAddressId());
+    public OrderEntity addOrder(OrderEntity orderEntity) throws AddressNotFoundException {
+        Optional<AddressEntity> addressEntity = addressDao.findById(orderEntity.getShippingAddressId());
 
         if(addressEntity.isEmpty()){
             logger.error(ErrorCodes.INVALID_ADDRESS.getErrorDesc());
             throw new AddressNotFoundException(ErrorCodes.INVALID_ADDRESS.getErrorDesc());
         }
 
-        order.setOrderStatus(OrderStatusCodes.CREATED.getDesc());
-        order.setCreatedTimeStamp(new Date());
-        order.setModifiedTimeStamp(new Date());
-        order.setOrderSubTotal(getSubTotal(order));
-        order.setOrderTotal(getTotal(order));
-        Order newOrder = orderDao.save(order);
+        orderEntity.setOrderStatus(OrderStatusCodes.CREATED.getDesc());
+        orderEntity.setCreatedTimeStamp(new Date());
+        orderEntity.setModifiedTimeStamp(new Date());
+        orderEntity.setOrderSubTotal(getSubTotal(orderEntity));
+        orderEntity.setOrderTotal(getTotal(orderEntity));
+        OrderEntity newOrderEntity = orderDao.save(orderEntity);
 
-        logger.info("Order with id: " + order.getOrderId() + " created for customer id:" + order.getCustomerId());
-        return newOrder;
+        logger.info("Order with id: " + orderEntity.getOrderId() + " created for customer id:" + orderEntity.getCustomerId());
+        return newOrderEntity;
     }
 
-    public void addBulkOrders(List<Order> orderList) throws AddressNotFoundException {
-        for(Order order: orderList){
+    public void addBulkOrders(List<OrderEntity> orderEntityList) throws AddressNotFoundException {
+        for(OrderEntity order: orderEntityList){
             addOrder(order);
         }
     }
 
-    private Double getSubTotal(Order order) {
-        return order.getOrderItemEntities().stream().map(itemEntity -> itemEntity.getPrice() * itemEntity.getQuantity()).reduce(0.0, Double::sum);
+    private Double getSubTotal(OrderEntity orderEntity) {
+        return orderEntity.getOrderItemEntities().stream().map(itemEntity -> itemEntity.getPrice() * itemEntity.getQuantity()).reduce(0.0, Double::sum);
     }
 
-    private Double getTotal(Order order){
-        return getSubTotal(order) + order.getOrderTax() + order.getShippingCharges();
+    private Double getTotal(OrderEntity orderEntity){
+        return getSubTotal(orderEntity) + orderEntity.getOrderTax() + orderEntity.getShippingCharges();
     }
 
-    public Order cancelOrder(Long orderId, Order order) {
+    public OrderEntity cancelOrder(Long orderId, OrderEntity orderEntity) {
         if(orderDao.findById(orderId).isEmpty()){
             logger.error(ErrorCodes.ORDER_NOT_FOUND.getErrorDesc());
             throw new OrderNotFoundException(ErrorCodes.ORDER_NOT_FOUND.getErrorDesc());
         }
-        order.setOrderStatus(OrderStatusCodes.CANCELLED.getDesc());
-        return orderDao.save(order);
+        orderEntity.setOrderStatus(OrderStatusCodes.CANCELLED.getDesc());
+        return orderDao.save(orderEntity);
     }
 }

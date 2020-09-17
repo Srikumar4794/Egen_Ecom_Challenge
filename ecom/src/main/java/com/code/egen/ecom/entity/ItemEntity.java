@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Item {
+public class ItemEntity {
     @Id
     @Column(name = "order_item_id")
     @GeneratedValue(strategy = GenerationType.AUTO)

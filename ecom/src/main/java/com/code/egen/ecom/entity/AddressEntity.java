@@ -8,7 +8,7 @@ import java.util.List;
 @Entity
 @Table(name = "address")
 @Data
-public class Address {
+public class AddressEntity {
     @Id
     @Column(name = "addr_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,8 +30,8 @@ public class Address {
     private String zipCode;
 
     @OneToMany(mappedBy = "shippingAddressEntity")
-    private List<Order> orderEntities;
+    private List<OrderEntity> orderEntities;
 
     @OneToMany(mappedBy = "billAddressEntity")
-    private List<Payment> paymentEntities;
+    private List<PaymentEntity> paymentEntities;
 }

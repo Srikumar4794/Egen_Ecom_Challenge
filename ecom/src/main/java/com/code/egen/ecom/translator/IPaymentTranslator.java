@@ -1,11 +1,11 @@
 package com.code.egen.ecom.translator;
 
 import com.code.egen.ecom.dto.PaymentDTO;
-import com.code.egen.ecom.entity.Payment;
+import com.code.egen.ecom.entity.PaymentEntity;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface IPaymentTranslator {
 
-    Payment toPaymentEntity(PaymentDTO paymentDTO);
+    PaymentEntity toPaymentEntity(PaymentDTO paymentDTO);
 }

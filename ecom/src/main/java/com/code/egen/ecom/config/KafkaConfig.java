@@ -1,6 +1,6 @@
 package com.code.egen.ecom.config;
 
-import com.code.egen.ecom.entity.Order;
+import com.code.egen.ecom.entity.OrderEntity;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -23,7 +23,7 @@ import java.util.Map;
 public class KafkaConfig {
 
     @Bean
-    public ProducerFactory<String, List<Order>> producerFactory() {
+    public ProducerFactory<String, List<OrderEntity>> producerFactory() {
         Map<String, Object> config = new HashMap<>();
         config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
         config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -32,26 +32,26 @@ public class KafkaConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, List<Order>> kafkaTemplate() {
+    public KafkaTemplate<String, List<OrderEntity>> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 
     @Bean
-    public ConsumerFactory<String, List<Order>> orderConsumerFactory() {
+    public ConsumerFactory<String, List<OrderEntity>> orderConsumerFactory() {
         Map<String, Object> config = new HashMap<>();
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
         config.put(ConsumerConfig.GROUP_ID_CONFIG, "bulk-order-group");
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         ObjectMapper objectMapper = new ObjectMapper();
-        JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, Order.class);
-        return new DefaultKafkaConsumerFactory<String, List<Order>>(config, new StringDeserializer(),
-                new JsonDeserializer<List<Order>>(javaType, objectMapper, false));
+        JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, OrderEntity.class);
+        return new DefaultKafkaConsumerFactory<String, List<OrderEntity>>(config, new StringDeserializer(),
+                new JsonDeserializer<List<OrderEntity>>(javaType, objectMapper, false));
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, List<Order>> orderKafkaListenerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, List<Order>> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, List<OrderEntity>> orderKafkaListenerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, List<OrderEntity>> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(orderConsumerFactory());
         return factory;
     }

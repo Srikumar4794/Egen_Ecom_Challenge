@@ -2,9 +2,9 @@ package com.code.egen.ecom.service;
 
 import com.code.egen.ecom.dao.IAddressDao;
 import com.code.egen.ecom.dao.IOrderDao;
-import com.code.egen.ecom.entity.Address;
-import com.code.egen.ecom.entity.Item;
-import com.code.egen.ecom.entity.Order;
+import com.code.egen.ecom.entity.AddressEntity;
+import com.code.egen.ecom.entity.ItemEntity;
+import com.code.egen.ecom.entity.OrderEntity;
 import com.code.egen.ecom.enums.OrderStatusCodes;
 import com.code.egen.ecom.exception.AddressNotFoundException;
 import com.code.egen.ecom.exception.OrderNotFoundException;
@@ -34,11 +34,11 @@ class OrderServiceTest {
 
     @Test
     void getOrderById() {
-        Order order = new Order();
-        order.setOrderId(2L);
-        order.setOrderStatus(OrderStatusCodes.CREATED.getDesc());
-        Mockito.when(orderDao.findById(2L)).thenReturn(Optional.of(order));
-        assertEquals(order, mockOrderService.getOrderById(2L));
+        OrderEntity orderEntity = new OrderEntity();
+        orderEntity.setOrderId(2L);
+        orderEntity.setOrderStatus(OrderStatusCodes.CREATED.getDesc());
+        Mockito.when(orderDao.findById(2L)).thenReturn(Optional.of(orderEntity));
+        assertEquals(orderEntity, mockOrderService.getOrderById(2L));
 
         Mockito.when(orderDao.findById(34L)).thenReturn(Optional.empty());
         assertThrows(OrderNotFoundException.class, () -> mockOrderService.getOrderById(34L));
@@ -46,42 +46,42 @@ class OrderServiceTest {
 
     @Test
     void addOrder() throws AddressNotFoundException {
-        Order order = new Order();
-        order.setOrderId(2L);
-        order.setShippingAddressId(5L);
-        order.setShippingCharges(10.5);
-        order.setOrderTax(5.0);
+        OrderEntity orderEntity = new OrderEntity();
+        orderEntity.setOrderId(2L);
+        orderEntity.setShippingAddressId(5L);
+        orderEntity.setShippingCharges(10.5);
+        orderEntity.setOrderTax(5.0);
 
-        Mockito.when(orderDao.save(order)).thenReturn(order);
-        Mockito.when(addressDao.findById(5L)).thenReturn(Optional.of(new Address()));
+        Mockito.when(orderDao.save(orderEntity)).thenReturn(orderEntity);
+        Mockito.when(addressDao.findById(5L)).thenReturn(Optional.of(new AddressEntity()));
 
-        List<Item> itemEntities = Arrays.asList(new Item(null, 15.0, 2), new Item(null, 21.0, 4));
-        order.setOrderItemEntities(itemEntities);
-        Order order1 = mockOrderService.addOrder(order);
-        assertEquals(129.5, order1.getOrderTotal());
-        assertEquals(OrderStatusCodes.CREATED.getDesc(), order1.getOrderStatus());
+        List<ItemEntity> itemEntities = Arrays.asList(new ItemEntity(null, 15.0, 2), new ItemEntity(null, 21.0, 4));
+        orderEntity.setOrderItemEntities(itemEntities);
+        OrderEntity orderEntity1 = mockOrderService.addOrder(orderEntity);
+        assertEquals(129.5, orderEntity1.getOrderTotal());
+        assertEquals(OrderStatusCodes.CREATED.getDesc(), orderEntity1.getOrderStatus());
 
-        order.setShippingAddressId(10L);
+        orderEntity.setShippingAddressId(10L);
         Mockito.when(addressDao.findById(10L)).thenReturn(Optional.empty());
-        assertThrows(AddressNotFoundException.class, () -> mockOrderService.addOrder(order));
+        assertThrows(AddressNotFoundException.class, () -> mockOrderService.addOrder(orderEntity));
     }
 
     @Test
     void cancelOrder() throws AddressNotFoundException {
-        Order order = new Order();
-        order.setOrderId(2L);
-        order.setOrderStatus(OrderStatusCodes.CREATED.getDesc());
-        order.setShippingAddressId(5L);
-        order.setShippingCharges(10.5);
-        order.setOrderTax(5.0);
+        OrderEntity orderEntity = new OrderEntity();
+        orderEntity.setOrderId(2L);
+        orderEntity.setOrderStatus(OrderStatusCodes.CREATED.getDesc());
+        orderEntity.setShippingAddressId(5L);
+        orderEntity.setShippingCharges(10.5);
+        orderEntity.setOrderTax(5.0);
 
         Mockito.when(orderDao.findById(2L)).thenReturn(Optional.empty());
-        assertThrows(OrderNotFoundException.class, () -> mockOrderService.cancelOrder(2L, order));
+        assertThrows(OrderNotFoundException.class, () -> mockOrderService.cancelOrder(2L, orderEntity));
 
-        Mockito.when(orderDao.findById(2L)).thenReturn(Optional.of(order));
-        Mockito.when(orderDao.save(order)).thenReturn(order);
+        Mockito.when(orderDao.findById(2L)).thenReturn(Optional.of(orderEntity));
+        Mockito.when(orderDao.save(orderEntity)).thenReturn(orderEntity);
 
-        assertEquals(OrderStatusCodes.CANCELLED.getDesc(), mockOrderService.cancelOrder(2L, order).getOrderStatus());
+        assertEquals(OrderStatusCodes.CANCELLED.getDesc(), mockOrderService.cancelOrder(2L, orderEntity).getOrderStatus());
 
     }
 }
