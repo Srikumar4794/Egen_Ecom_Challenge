@@ -1,6 +1,8 @@
 package com.code.egen.ecom.entity;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,6 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "customer_order")
 @Data
+@NoArgsConstructor
 public class OrderEntity {
     @Id
     @Column(name = "order_id")
