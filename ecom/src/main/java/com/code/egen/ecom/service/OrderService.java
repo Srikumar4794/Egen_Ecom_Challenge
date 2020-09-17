@@ -48,7 +48,10 @@ public class OrderService {
         orderEntity.setModifiedTimeStamp(new Date());
         orderEntity.setOrderSubTotal(getSubTotal(orderEntity));
         orderEntity.setOrderTotal(getTotal(orderEntity));
-        return orderDao.save(orderEntity);
+        OrderEntity newOrderEntity = orderDao.save(orderEntity);
+
+        logger.info("Order with id: " + orderEntity.getOrderId() + " created for customer id:" + orderEntity.getCustomerId());
+        return newOrderEntity;
     }
 
     private Double getSubTotal(OrderEntity orderEntity) {
