@@ -1,6 +1,7 @@
 package com.code.egen.ecom.controller;
 
 import com.code.egen.ecom.entity.OrderEntity;
+import com.code.egen.ecom.exception.OrderNotFoundException;
 import com.code.egen.ecom.service.OrderService;
 import com.code.egen.ecom.translator.IOrderTranslator;
 import com.code.egen.ecom.vo.OrderVO;
@@ -21,7 +22,7 @@ public class OrderController extends BaseRestController{
             OrderVO body = orderTranslator.toOrderVO(orderService.getOrderById(orderId));
             return ResponseEntity.ok(body);
         }
-        catch(IllegalArgumentException exception){
+        catch(OrderNotFoundException exception){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
@@ -37,7 +38,7 @@ public class OrderController extends BaseRestController{
             orderService.cancelOrder(orderId, orderEntity);
             return ResponseEntity.ok().build();
         }
-        catch(IllegalArgumentException exception) {
+        catch(OrderNotFoundException exception) {
             return ResponseEntity.notFound().build();
         }
     }

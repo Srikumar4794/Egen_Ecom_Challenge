@@ -1,6 +1,7 @@
 package com.code.egen.ecom.controller;
 
 import com.code.egen.ecom.entity.PaymentEntity;
+import com.code.egen.ecom.exception.PaymentException;
 import com.code.egen.ecom.service.PaymentService;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class PaymentController extends BaseRestController {
             paymentService.addPayment(paymentEntity);
             return ResponseEntity.status(HttpStatus.OK).body(null);
         }
-        catch(IllegalArgumentException illegalArgumentException){
+        catch(PaymentException exception){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
 
