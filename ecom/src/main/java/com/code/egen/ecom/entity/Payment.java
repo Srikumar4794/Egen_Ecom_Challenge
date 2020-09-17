@@ -8,7 +8,7 @@ import java.util.Date;
 @Entity
 @Table(name = "payment")
 @Data
-public class PaymentEntity {
+public class Payment {
     @Id
     @Column(name = "payment_confirmation_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,11 +28,11 @@ public class PaymentEntity {
 
     @ManyToOne
     @JoinColumn(name = "billing_addr_id", nullable = false, insertable = false, updatable = false)
-    private AddressEntity billAddressEntity;
+    private Address billAddress;
 
     @ManyToOne
     @JoinColumn(name = "order_id", insertable = false, updatable = false)
-    private OrderEntity orderEntity;
+    private Order order;
 
     @Column(name = "payment_ts")
     private Date paymentTimeStamp;

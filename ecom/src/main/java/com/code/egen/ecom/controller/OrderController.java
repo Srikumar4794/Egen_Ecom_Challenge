@@ -1,6 +1,6 @@
 package com.code.egen.ecom.controller;
 
-import com.code.egen.ecom.entity.OrderEntity;
+import com.code.egen.ecom.entity.Order;
 import com.code.egen.ecom.exception.AddressNotFoundException;
 import com.code.egen.ecom.exception.OrderNotFoundException;
 import com.code.egen.ecom.kafka.KafkaProducer;
@@ -43,9 +43,9 @@ public class OrderController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Order successfully created."),
             @ApiResponse(code = 400, message = "Order details not found")
     })
-    public ResponseEntity<OrderVO> createOrder(@RequestBody OrderEntity orderEntity) {
+    public ResponseEntity<OrderVO> createOrder(@RequestBody Order order) {
         try {
-            OrderEntity response = orderService.addOrder(orderEntity);
+            Order response = orderService.addOrder(order);
             return ResponseEntity.ok(orderTranslator.toOrderVO(response));
         }
         catch (AddressNotFoundException addressNotFoundException) {
@@ -56,16 +56,16 @@ public class OrderController {
     @PostMapping(value = "/api/v1/order-bulk")
     @ApiOperation(value = "Create a group of orders.")
     @ApiResponse(code = 202, message = "Accepted")
-    public void createOrders(@RequestBody List<OrderEntity> orderEntities){
+    public void createOrders(@RequestBody List<Order> orderEntities){
         kafkaProducer.sendOrdersToTopic("order-test",orderEntities);
     }
 
     @PatchMapping(value = "/api/v1/order/{id}/cancel")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Order successfully cancelled."),
             @ApiResponse(code = 400, message = "Order details not found.")})
-    public ResponseEntity<OrderVO> cancelOrder(@PathVariable("id") Long orderId, @RequestBody OrderEntity orderEntity) {
+    public ResponseEntity<OrderVO> cancelOrder(@PathVariable("id") Long orderId, @RequestBody Order order) {
         try {
-            OrderEntity responseEntity = orderService.cancelOrder(orderId, orderEntity);
+            Order responseEntity = orderService.cancelOrder(orderId, order);
             return ResponseEntity.ok(orderTranslator.toOrderVO(responseEntity));
         }
         catch (OrderNotFoundException exception) {

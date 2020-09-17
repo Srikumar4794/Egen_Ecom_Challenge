@@ -1,6 +1,5 @@
 package com.code.egen.ecom.entity;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +11,7 @@ import java.util.List;
 @Table(name = "customer_order")
 @Data
 @NoArgsConstructor
-public class OrderEntity {
+public class Order {
     @Id
     @Column(name = "order_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,7 +19,7 @@ public class OrderEntity {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
-    private List<ItemEntity> orderItemEntities;
+    private List<Item> orderItemEntities;
 
     @Column(name = "customer_id")
     private Long customerId;
@@ -51,5 +50,5 @@ public class OrderEntity {
 
     @ManyToOne
     @JoinColumn(name = "shipping_addr_id",nullable = false, insertable = false, updatable = false)
-    private AddressEntity shippingAddressEntity;
+    private Address shippingAddress;
 }

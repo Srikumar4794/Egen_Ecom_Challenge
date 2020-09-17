@@ -1,6 +1,6 @@
 package com.code.egen.ecom.controller;
 
-import com.code.egen.ecom.entity.AddressEntity;
+import com.code.egen.ecom.entity.Address;
 import com.code.egen.ecom.service.AddressService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -17,7 +17,7 @@ public class AddressController {
     @PostMapping(value = "/api/v1/address")
     @ApiOperation(value = "Add a new address of a customer.")
     @ApiResponse(code = 200, message = "Added new customer address successfully.")
-    public void addAddress(@RequestBody AddressEntity addressEntity){
-        addressService.addAddress(addressEntity);
+    public void addAddress(@RequestBody Address address){
+        addressService.addAddress(address);
     }
 }

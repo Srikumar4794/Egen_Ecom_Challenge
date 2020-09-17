@@ -3,8 +3,8 @@ package com.code.egen.ecom.service;
 import com.code.egen.ecom.dao.IOrderDao;
 import com.code.egen.ecom.dao.IPaymentDao;
 import com.code.egen.ecom.dto.PaymentDTO;
-import com.code.egen.ecom.entity.OrderEntity;
-import com.code.egen.ecom.entity.PaymentEntity;
+import com.code.egen.ecom.entity.Order;
+import com.code.egen.ecom.entity.Payment;
 import com.code.egen.ecom.enums.ErrorCodes;
 import com.code.egen.ecom.enums.OrderStatusCodes;
 import com.code.egen.ecom.exception.OrderNotFoundException;
@@ -29,33 +29,33 @@ public class PaymentService {
 
     private Logger logger = LoggerFactory.getLogger(PaymentService.class);
 
-    public PaymentEntity addPayment(PaymentDTO paymentDTO){
-        PaymentEntity paymentEntity = paymentTranslator.toPaymentEntity(paymentDTO);
-        List<PaymentEntity> paymentEntities = paymentDao.findAllByOrderId(paymentEntity.getOrderId());
+    public Payment addPayment(PaymentDTO paymentDTO){
+        Payment payment = paymentTranslator.toPaymentEntity(paymentDTO);
+        List<Payment> paymentEntities = paymentDao.findAllByOrderId(payment.getOrderId());
 
         if(paymentEntities != null && !paymentEntities.isEmpty()){
-            Double alreadyPaid = paymentEntities.stream().map(PaymentEntity::getPaymentAmount).reduce(0.0, Double::sum);
-            Optional<OrderEntity> optionalOrderEntity = orderDao.findById(paymentEntity.getOrderId());
+            Double alreadyPaid = paymentEntities.stream().map(Payment::getPaymentAmount).reduce(0.0, Double::sum);
+            Optional<Order> optionalOrderEntity = orderDao.findById(payment.getOrderId());
 
             if(optionalOrderEntity.isEmpty()){
                 logger.error(ErrorCodes.ORDER_NOT_FOUND.getErrorDesc());
                 throw new OrderNotFoundException(ErrorCodes.ORDER_NOT_FOUND.getErrorDesc());
             }
 
-            double total = alreadyPaid + paymentEntity.getPaymentAmount();
+            double total = alreadyPaid + payment.getPaymentAmount();
 
-            OrderEntity orderEntity = optionalOrderEntity.get();
-            if(total > orderEntity.getOrderTotal()){
+            Order order = optionalOrderEntity.get();
+            if(total > order.getOrderTotal()){
                 logger.error(ErrorCodes.INVALID_PAYMENT_DETAILS.getErrorDesc());
                 throw new PaymentException(ErrorCodes.INVALID_PAYMENT_DETAILS.getErrorDesc());
             }
 
-            if(total == orderEntity.getOrderTotal()){
-                orderEntity.setOrderStatus(OrderStatusCodes.PAID.getDesc());
-                orderDao.save(orderEntity);
+            if(total == order.getOrderTotal()){
+                order.setOrderStatus(OrderStatusCodes.PAID.getDesc());
+                orderDao.save(order);
             }
         }
-        paymentEntity.setPaymentTimeStamp(new Date());
-        return paymentDao.save(paymentEntity);
+        payment.setPaymentTimeStamp(new Date());
+        return paymentDao.save(payment);
     }
 }

@@ -1,7 +1,6 @@
 package com.code.egen.ecom.controller;
 
 import com.code.egen.ecom.dto.PaymentDTO;
-import com.code.egen.ecom.entity.PaymentEntity;
 import com.code.egen.ecom.exception.PaymentException;
 import com.code.egen.ecom.service.PaymentService;
 import io.swagger.annotations.ApiOperation;
