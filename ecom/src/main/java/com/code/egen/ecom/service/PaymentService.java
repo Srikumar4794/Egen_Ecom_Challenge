@@ -26,7 +26,7 @@ public class PaymentService {
 
     private Logger logger = LoggerFactory.getLogger(PaymentService.class);
 
-    public void addPayment(PaymentEntity paymentEntity){
+    public PaymentEntity addPayment(PaymentEntity paymentEntity){
         List<PaymentEntity> paymentEntities = paymentDao.findAllByOrderId(paymentEntity.getOrderId());
 
         if(paymentEntities != null && !paymentEntities.isEmpty()){
@@ -52,6 +52,6 @@ public class PaymentService {
             }
         }
         paymentEntity.setPaymentTimeStamp(new Date());
-        paymentDao.save(paymentEntity);
+        return paymentDao.save(paymentEntity);
     }
 }
