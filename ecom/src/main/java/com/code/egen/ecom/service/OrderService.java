@@ -1,9 +1,12 @@
 package com.code.egen.ecom.service;
 
+import com.code.egen.ecom.dao.IAddressDao;
 import com.code.egen.ecom.dao.IOrderDao;
+import com.code.egen.ecom.entity.AddressEntity;
 import com.code.egen.ecom.entity.OrderEntity;
 import com.code.egen.ecom.enums.ErrorCodes;
 import com.code.egen.ecom.enums.OrderStatusCodes;
+import com.code.egen.ecom.exception.AddressNotFoundException;
 import com.code.egen.ecom.exception.OrderNotFoundException;
 import lombok.Data;
 import org.slf4j.Logger;
@@ -18,6 +21,8 @@ import java.util.Optional;
 public class OrderService {
     private final IOrderDao orderDao;
 
+    private final IAddressDao addressDao;
+
     private Logger logger = LoggerFactory.getLogger(OrderService.class);
 
     public OrderEntity getOrderById(Long orderId){
@@ -30,13 +35,20 @@ public class OrderService {
         return orderEntity.get();
     }
 
-    public void addOrder(OrderEntity orderEntity) {
+    public OrderEntity addOrder(OrderEntity orderEntity) throws AddressNotFoundException {
+        Optional<AddressEntity> addressEntity = addressDao.findById(orderEntity.getShippingAddressId());
+
+        if(addressEntity.isEmpty()){
+            logger.error(ErrorCodes.INVALID_ADDRESS.getErrorDesc());
+            throw new AddressNotFoundException(ErrorCodes.INVALID_ADDRESS.getErrorDesc());
+        }
+
         orderEntity.setOrderStatus(OrderStatusCodes.CREATED.getDesc());
         orderEntity.setCreatedTimeStamp(new Date());
         orderEntity.setModifiedTimeStamp(new Date());
         orderEntity.setOrderSubTotal(getSubTotal(orderEntity));
         orderEntity.setOrderTotal(getTotal(orderEntity));
-        orderDao.save(orderEntity);
+        return orderDao.save(orderEntity);
     }
 
     private Double getSubTotal(OrderEntity orderEntity) {

@@ -4,7 +4,8 @@ import lombok.Getter;
 
 public enum ErrorCodes {
     ORDER_NOT_FOUND("Order not found because of invalid order details."),
-    INVALID_PAYMENT_DETAILS("Incorrect payment amount details");
+    INVALID_PAYMENT_DETAILS("Incorrect payment amount details"),
+    INVALID_ADDRESS("Address details not found");
 
     @Getter
     private String errorDesc;
