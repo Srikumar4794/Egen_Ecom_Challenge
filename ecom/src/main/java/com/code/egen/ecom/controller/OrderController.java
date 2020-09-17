@@ -1,6 +1,5 @@
 package com.code.egen.ecom.controller;
 
-import com.code.egen.ecom.dto.BatchOrderDTO;
 import com.code.egen.ecom.entity.OrderEntity;
 import com.code.egen.ecom.exception.AddressNotFoundException;
 import com.code.egen.ecom.exception.OrderNotFoundException;
