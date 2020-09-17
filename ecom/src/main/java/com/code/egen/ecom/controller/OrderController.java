@@ -18,7 +18,8 @@ public class OrderController extends BaseRestController{
     @GetMapping(value = "/order/{id}")
     public ResponseEntity<OrderVO> getOrderById(@PathVariable("id") Long orderId){
         try{
-            return ResponseEntity.ok(orderTranslator.toOrderVO(orderService.getOrderById(orderId)));
+            OrderVO body = orderTranslator.toOrderVO(orderService.getOrderById(orderId));
+            return ResponseEntity.ok(body);
         }
         catch(IllegalArgumentException exception){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

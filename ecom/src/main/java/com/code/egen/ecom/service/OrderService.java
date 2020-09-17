@@ -14,7 +14,8 @@ public class OrderService {
     private final IOrderDao orderDao;
 
     public OrderEntity getOrderById(Long orderId){
-        return orderDao.findById(orderId).orElseThrow(() -> new IllegalArgumentException("Order does not exist"));
+        OrderEntity orderEntity = orderDao.findById(orderId).orElseThrow(() -> new IllegalArgumentException("Order does not exist"));
+        return orderEntity;
     }
 
     public void addOrder(OrderEntity orderEntity) {
