@@ -56,9 +56,17 @@ public class OrderService {
     }
 
     public void addBulkOrders(List<OrderEntity> orderEntityList) throws AddressNotFoundException {
-        for(OrderEntity order: orderEntityList){
+/*        for(OrderEntity order: orderEntityList){
             addOrder(order);
-        }
+        }*/
+        orderEntityList.stream().forEach((orderEntity -> {
+            if(addressDao.findById(orderEntity.getShippingAddressId()).isEmpty())
+                try {
+                    throw new AddressNotFoundException(ErrorCodes.INVALID_ADDRESS.getErrorDesc());
+                } catch (AddressNotFoundException addressNotFoundException) {
+                    addressNotFoundException.printStackTrace();
+                }
+        }));
     }
 
     private Double getSubTotal(OrderEntity orderEntity) {
